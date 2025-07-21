@@ -6,7 +6,7 @@ import 'package:pta_contrib/widgets/card.dart';
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         'You haven\'t chosen any projects yet. Select one from above!',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppTheme.darkText.withOpacity(0.7),
+                              color: AppTheme.darkText.withAlpha((0.7 * 255).toInt()),
                             ),
                         textAlign: TextAlign.center,
                       ),

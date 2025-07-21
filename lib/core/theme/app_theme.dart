@@ -103,21 +103,21 @@ class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.9), 
+        fillColor: Colors.white.withAlpha((0.9 * 255).toInt()), 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none, 
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: primaryBrown.withOpacity(0.5), width: 1),
+          borderSide: BorderSide(color: primaryBrown.withAlpha((0.5 * 255).toInt()), width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: accentGold, width: 2), 
         ),
-        labelStyle: TextStyle(color: primaryBrown.withOpacity(0.8)),
-        hintStyle: TextStyle(color: darkText.withOpacity(0.6)),
+        labelStyle: TextStyle(color: primaryBrown.withAlpha((0.8 * 255).toInt())),
+        hintStyle: TextStyle(color: darkText.withAlpha((0.6 * 255).toInt())),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     
