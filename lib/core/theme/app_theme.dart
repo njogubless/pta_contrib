@@ -22,11 +22,8 @@ class AppTheme {
         primarySwatch: _createMaterialColor(primaryBrown), 
         accentColor: accentGold, 
         backgroundColor: lightBackground, 
-       
-        onPrimary: Colors.white,
-
-        onBackground: darkText,
       ).copyWith(
+        onPrimary: Colors.white, // Ensure text on primary background is readable 
         secondary: accentGold,
       ),
 

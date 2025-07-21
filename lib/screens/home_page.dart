@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pta_contrib/core/theme/app_theme.dart';
 import 'package:pta_contrib/model/model.dart';
 import 'package:pta_contrib/widgets/card.dart';
 
@@ -159,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         'You haven\'t chosen any projects yet. Select one from above!',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).darkText.withOpacity(0.7),
+                              color: AppTheme.darkText.withOpacity(0.7),
                             ),
                         textAlign: TextAlign.center,
                       ),

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:pta_contrib/core/theme/app_theme.dart';
 import 'package:pta_contrib/model/model.dart';
 import 'package:pta_contrib/widgets/form.dart';
 
@@ -102,7 +103,7 @@ class ProjectCard extends StatelessWidget {
                   
                   LinearProgressIndicator(
                     value: project.currentAmount / project.targetAmount,
-                    backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).primaryColor.withValues(2),
                     valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.secondary),
                     minHeight: 8, 
                     borderRadius: BorderRadius.circular(10),
@@ -122,7 +123,7 @@ class ProjectCard extends StatelessWidget {
                       Text(
                         'of \$${project.targetAmount.toStringAsFixed(0)}',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).darkText.withOpacity(0.7),
+                              color: AppTheme.darkText.withOpacity(0.7),
                             ),
                       ),
                     ],
