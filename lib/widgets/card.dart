@@ -1,16 +1,14 @@
-// project_card.dart
+
 import 'package:flutter/material.dart';
 import 'package:pta_contrib/model/model.dart';
 import 'package:pta_contrib/widgets/form.dart';
 
-/// A StatelessWidget that displays a project's information in a card format.
-/// It is tappable and navigates to the ContributionForm when tapped.
-class ProjectCard extends StatelessWidget {
-  final Project project; // The project data to display
-  final VoidCallback? onChooseProject; // Callback when the project is chosen (e.g., added to "my projects")
 
-  /// Constructor for ProjectCard.
-  /// [project] is required. [onChooseProject] is optional.
+class ProjectCard extends StatelessWidget {
+  final Project project;
+  final VoidCallback? onChooseProject; 
+
+
   const ProjectCard({
     Key? key,
     required this.project,
@@ -20,9 +18,9 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // GestureDetector makes the entire card tappable
+  
       onTap: () {
-        // Navigate to the ContributionForm when the card is tapped
+      
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -31,22 +29,22 @@ class ProjectCard extends StatelessWidget {
         );
       },
       child: Card(
-        // Use the card theme defined in app_theme.dart
-        elevation: 6, // Slightly higher elevation for a more prominent look
+ 
+        elevation: 6,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18), // More rounded corners
+          borderRadius: BorderRadius.circular(18), 
         ),
-        clipBehavior: Clip.antiAlias, // Ensures content is clipped to the rounded corners
+        clipBehavior: Clip.antiAlias, 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Project Image
+ 
             Image.network(
               project.imageUrl,
-              height: 180, // Fixed height for the image
-              width: double.infinity, // Image takes full width of the card
-              fit: BoxFit.cover, // Cover the entire area, cropping if necessary
-              // Placeholder for image loading errors or while loading
+              height: 180, 
+              width: double.infinity, 
+              fit: BoxFit.cover, 
+        
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Container(
@@ -64,7 +62,7 @@ class ProjectCard extends StatelessWidget {
                 );
               },
               errorBuilder: (context, error, stackTrace) {
-                // Fallback image/icon if the URL fails
+             
                 return Container(
                   height: 180,
                   color: Colors.grey[300],
@@ -83,34 +81,34 @@ class ProjectCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Project Title
+                 
                   Text(
                     project.title,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).primaryColor,
                         ),
-                    maxLines: 2, // Limit title to two lines
-                    overflow: TextOverflow.ellipsis, // Add ellipsis if text overflows
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis, 
                   ),
                   const SizedBox(height: 8),
-                  // Project Description
+         
                   Text(
                     project.description,
                     style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 3, // Limit description to three lines
+                    maxLines: 3, 
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 12),
-                  // Progress Indicator
+                  
                   LinearProgressIndicator(
                     value: project.currentAmount / project.targetAmount,
                     backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
                     valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.secondary),
-                    minHeight: 8, // Thicker progress bar
+                    minHeight: 8, 
                     borderRadius: BorderRadius.circular(10),
                   ),
                   const SizedBox(height: 8),
-                  // Current and Target Amount
+          
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -130,7 +128,7 @@ class ProjectCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // "Choose Project" button (optional, for adding to chosen list)
+         
                   if (onChooseProject != null)
                     Center(
                       child: ElevatedButton.icon(

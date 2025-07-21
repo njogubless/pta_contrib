@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:pta_contrib/model/model.dart';
 
 class ContributionForm extends StatefulWidget {
-  final Project project; // The project to which the user is contributing
+  final Project project; 
 
-  /// Constructor for ContributionForm, requires a Project object.
+
   const ContributionForm({Key? key, required this.project}) : super(key: key);
 
   @override
   State<ContributionForm> createState() => _ContributionFormState();
 }
 
-/// The state class for ContributionForm.
-/// Manages the text editing controllers and form validation.
 class _ContributionFormState extends State<ContributionForm> {
-  // GlobalKey for the form to enable validation
+ 
   final _formKey = GlobalKey<FormState>();
 
-  // Text editing controllers for each input field
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -25,7 +23,7 @@ class _ContributionFormState extends State<ContributionForm> {
 
   @override
   void dispose() {
-    // Dispose controllers when the widget is removed from the widget tree
+
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
@@ -33,8 +31,6 @@ class _ContributionFormState extends State<ContributionForm> {
     super.dispose();
   }
 
-  /// Shows a confirmation dialog after successful form submission.
-  /// This replaces the use of `alert()` and provides a better user experience.
   void _showConfirmationDialog() {
     showDialog(
       context: context,
@@ -47,8 +43,8 @@ class _ContributionFormState extends State<ContributionForm> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.of(context).pop(); // Go back to the previous screen (HomePage)
+                Navigator.of(context).pop();
+                Navigator.of(context).pop(); 
               },
               child: Text('OK', style: TextStyle(color: Theme.of(context).primaryColor)),
             ),
@@ -58,19 +54,17 @@ class _ContributionFormState extends State<ContributionForm> {
     );
   }
 
-  /// Handles the form submission logic.
-  /// Validates the form fields and shows a confirmation if valid.
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // If the form is valid, proceed with submission logic
-      // In a real app, you would send this data to your backend
+     
       print('Name: ${_nameController.text}');
       print('Email: ${_emailController.text}');
       print('Phone: ${_phoneController.text}');
       print('Amount: ${_amountController.text}');
       print('Contributing to project: ${widget.project.title}');
 
-      _showConfirmationDialog(); // Show success message
+      _showConfirmationDialog(); 
     }
   }
 
@@ -83,11 +77,11 @@ class _ContributionFormState extends State<ContributionForm> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Form(
-          key: _formKey, // Assign the form key
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // Project details section
+          
               Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -124,7 +118,7 @@ class _ContributionFormState extends State<ContributionForm> {
               ),
               const SizedBox(height: 30),
 
-              // Name input field
+
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -141,7 +135,7 @@ class _ContributionFormState extends State<ContributionForm> {
               ),
               const SizedBox(height: 20),
 
-              // Email input field
+           
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -162,7 +156,6 @@ class _ContributionFormState extends State<ContributionForm> {
               ),
               const SizedBox(height: 20),
 
-              // Phone number input field
               TextFormField(
                 controller: _phoneController,
                 decoration: InputDecoration(
@@ -175,7 +168,7 @@ class _ContributionFormState extends State<ContributionForm> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';
                   }
-                  // Basic phone number validation (can be more robust)
+        
                   if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
                     return 'Please enter a valid phone number';
                   }
@@ -184,7 +177,7 @@ class _ContributionFormState extends State<ContributionForm> {
               ),
               const SizedBox(height: 20),
 
-              // Amount input field
+    
               TextFormField(
                 controller: _amountController,
                 decoration: InputDecoration(
@@ -205,7 +198,7 @@ class _ContributionFormState extends State<ContributionForm> {
               ),
               const SizedBox(height: 30),
 
-              // Contribute button
+    
               ElevatedButton(
                 onPressed: _submitForm,
                 style: ElevatedButton.styleFrom(
@@ -213,7 +206,7 @@ class _ContributionFormState extends State<ContributionForm> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.secondary, // Use accent gold
+                  backgroundColor: Theme.of(context).colorScheme.secondary, 
                   foregroundColor: Colors.white,
                 ),
                 child: Text(

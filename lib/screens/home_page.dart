@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pta_contrib/model/model.dart';
 import 'package:pta_contrib/widgets/card.dart';
-// Import the AppTheme for custom colors/styles
 
-/// A StatefulWidget that represents the main home page of the application.
-/// It displays a carousel of available projects and a list of projects chosen by the user.
+
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,10 +11,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-/// The state class for HomePage.
-/// Manages the lists of all projects and chosen projects.
+
 class _HomePageState extends State<HomePage> {
-  // A list of all available projects (mock data for demonstration)
+
   final List<Project> _allProjects = [
     Project(
       id: '1',
@@ -51,16 +49,16 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  // A list of projects that the user has chosen to contribute to
+
   final List<Project> _chosenProjects = [];
 
-  /// Adds a project to the [_chosenProjects] list if it's not already there.
-  /// Updates the UI to reflect the change.
+
+  
   void _chooseProject(Project project) {
     setState(() {
       if (!_chosenProjects.contains(project)) {
         _chosenProjects.add(project);
-        // Show a snackbar notification
+       
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${project.title} added to your chosen projects!'),
@@ -86,13 +84,13 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Row(
           children: [
-            // App Logo (using a placeholder for now, replace with actual image asset)
+         
             Image.asset(
-              'assets/logo.png', // This assumes you have 'assets/logo.png'
+              'assets/logo.png', 
               height: 40,
               width: 40,
               errorBuilder: (context, error, stackTrace) {
-                // Fallback for logo if asset is not found
+       
                 return CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                   child: const Icon(Icons.volunteer_activism, color: Colors.white),
@@ -100,20 +98,20 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             const SizedBox(width: 10),
-            // App Title
+        
             Text(
               'Impact Fund',
               style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
           ],
         ),
-        centerTitle: false, // Align title to the start
+        centerTitle: false, 
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Section for "Explore Projects" Carousel
+        
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 16.0),
               child: Text(
@@ -123,11 +121,11 @@ class _HomePageState extends State<HomePage> {
                     ),
               ),
             ),
-            // Carousel View (using PageView.builder for simplicity)
+           
             SizedBox(
-              height: 400, // Height of the carousel
+              height: 400,
               child: PageView.builder(
-                controller: PageController(viewportFraction: 0.85), // Show part of next/previous card
+                controller: PageController(viewportFraction: 0.85), 
                 itemCount: _allProjects.length,
                 itemBuilder: (context, index) {
                   final project = _allProjects[index];
@@ -143,7 +141,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 30),
 
-            // Section for "My Chosen Projects"
+           
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
               child: Text(
@@ -153,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                     ),
               ),
             ),
-            // List of Chosen Projects
+        
             _chosenProjects.isEmpty
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -168,8 +166,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                 : ListView.builder(
-                    shrinkWrap: true, // Important for ListView inside SingleChildScrollView
-                    physics: const NeverScrollableScrollPhysics(), // Disable internal scrolling
+                    shrinkWrap: true, 
+                    physics: const NeverScrollableScrollPhysics(), 
                     itemCount: _chosenProjects.length,
                     itemBuilder: (context, index) {
                       final project = _chosenProjects[index];
@@ -179,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-            const SizedBox(height: 24), // Add some space at the bottom
+            const SizedBox(height: 24), 
           ],
         ),
       ),

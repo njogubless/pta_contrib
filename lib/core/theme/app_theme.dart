@@ -1,48 +1,47 @@
-// app_theme.dart
+
 import 'package:flutter/material.dart';
 
-/// Defines the custom theme for the application, inspired by the provided logo.
-/// It uses a warm brown as the primary color with gold accents.
-class AppTheme {
-  // Define the primary brown color from the logo
-  static const Color primaryBrown = Color(0xFF5A3A2B); // A deep, rich brown
-  // Define an accent gold color from the logo
-  static const Color accentGold = Color(0xFFD4AF37); // A vibrant gold
-  // Define a lighter background color that complements the brown
-  static const Color lightBackground = Color(0xFFF5E5D4); // A soft, creamy brown
-  // Define a darker text color for contrast on light backgrounds
-  static const Color darkText = Color(0xFF333333); // A dark grey for readability
 
-  /// Returns the ThemeData object configured with the app's brown and gold theme.
+class AppTheme {
+
+  static const Color primaryBrown = Color(0xFF5A3A2B); 
+ 
+  static const Color accentGold = Color(0xFFD4AF37); 
+ 
+  static const Color lightBackground = Color(0xFFF5E5D4);
+
+  static const Color darkText = Color(0xFF333333); 
+
+
   static ThemeData get brownTheme {
     return ThemeData(
-      // Set the primary color for the app
+    
       primaryColor: primaryBrown,
-      // Define the color scheme for various UI elements
+    
       colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: _createMaterialColor(primaryBrown), // Generate a MaterialColor from primaryBrown
-        accentColor: accentGold, // Set the accent color
-        backgroundColor: lightBackground, // Set the background color
-        // Ensure text on primary background is readable
+        primarySwatch: _createMaterialColor(primaryBrown), 
+        accentColor: accentGold, 
+        backgroundColor: lightBackground, 
+       
         onPrimary: Colors.white,
-        // Ensure text on background is readable
+
         onBackground: darkText,
       ).copyWith(
-        secondary: accentGold, // Use accentGold as the secondary color
+        secondary: accentGold,
       ),
-      // Configure the AppBar theme
+
       appBarTheme: const AppBarTheme(
-        color: primaryBrown, // AppBar background color
-        elevation: 0, // No shadow for a flat design
+        color: primaryBrown, 
+        elevation: 0,
         titleTextStyle: TextStyle(
-          color: Colors.white, // AppBar title text color
+          color: Colors.white,
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          fontFamily: 'Inter', // Custom font for a clean look
+          fontFamily: 'Inter', 
         ),
-        iconTheme: IconThemeData(color: Colors.white), // AppBar icon color
+        iconTheme: IconThemeData(color: Colors.white), 
       ),
-      // Configure the text theme for various text styles
+      
       textTheme: const TextTheme(
         headlineLarge: TextStyle(
             fontSize: 32.0,
@@ -79,13 +78,13 @@ class AppTheme {
             color: Colors.white,
             fontFamily: 'Inter'),
       ),
-      // Configure button themes
+   
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: accentGold, // Button background color
-          foregroundColor: Colors.white, // Button text color
+          backgroundColor: accentGold, 
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Rounded corners for buttons
+            borderRadius: BorderRadius.circular(12), 
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           textStyle: const TextStyle(
@@ -97,20 +96,20 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: primaryBrown, // Text button color
+          foregroundColor: primaryBrown,
           textStyle: const TextStyle(
             fontSize: 16,
             fontFamily: 'Inter',
           ),
         ),
       ),
-      // Configure input decoration theme for text fields
+
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.9), // Light background for input fields
+        fillColor: Colors.white.withOpacity(0.9), 
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12), // Rounded corners for input fields
-          borderSide: BorderSide.none, // No border for a cleaner look
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none, 
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -118,30 +117,29 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: accentGold, width: 2), // Accent border when focused
+          borderSide: const BorderSide(color: accentGold, width: 2), 
         ),
         labelStyle: TextStyle(color: primaryBrown.withOpacity(0.8)),
         hintStyle: TextStyle(color: darkText.withOpacity(0.6)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      // Configure card theme
+    
       cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 4,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16), // Rounded corners for cards
+          borderRadius: BorderRadius.circular(16),
         ),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       ),
-      // Set the overall scaffold background color
+      
       scaffoldBackgroundColor: lightBackground,
-      // Apply a custom font family globally if desired
+      
       fontFamily: 'Inter',
     );
   }
 
-  /// Helper function to create a MaterialColor from a single Color.
-  /// This is useful for `primarySwatch` which requires a MaterialColor.
+
   static MaterialColor _createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
