@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pta_contrib/core/theme/app_theme.dart';
-import 'package:pta_contrib/model/model.dart';
-import 'package:pta_contrib/widgets/card.dart';
+import 'package:pta_contrib/Features/Projects/Data/model/model.dart';
+import 'package:pta_contrib/shared/widgets/card.dart';
 
 
 
