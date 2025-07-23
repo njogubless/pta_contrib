@@ -7,7 +7,6 @@ import 'package:pta_contrib/services/firebase/firebase_service.dart';
 
 // Analytics data models
 
-
 // Analytics service
 class AnalyticsService {
   final FirebaseService _firebaseService;
@@ -58,7 +57,10 @@ class AnalyticsService {
     }
   }
 
-  Future<int> _getTotalContributions(DateTime startDate, DateTime endDate) async {
+  Future<int> _getTotalContributions(
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
     final contributions = await _firebaseService.getContributions();
     return contributions.where((c) {
       return c.createdAt.isAfter(startDate) && c.createdAt.isBefore(endDate);
@@ -66,12 +68,12 @@ class AnalyticsService {
   }
 
   Future<int> _getTotalProjects() async {
-    final projects = await _firebaseService.getProjects();
-    return projects.length;
+    final projects = await _firebaseService.getProject();
+    return projects;
   }
 
   Future<int> _getTotalUsers() async {
-    final users = await _firebaseService.getUsers();
+    final users = await _firebaseService.getUser();
     return users.length;
   }
 
@@ -108,7 +110,7 @@ class AnalyticsService {
     DateTime startDate,
     DateTime endDate,
   ) async {
-    final projects = await _firebaseService.getProjects();
+    final projects = await _firebaseService.getProject();
     final contributions = await _firebaseService.getContributions();
 
     final filteredContributions = contributions.where((c) {
@@ -116,7 +118,7 @@ class AnalyticsService {
     }).toList();
 
     final List<ProjectStats> stats = [];
-    for (final project in projects) {
+    for (final project in project) {
       final projectContributions = filteredContributions
           .where((c) => c.projectId == project.id)
           .toList();
@@ -126,11 +128,13 @@ class AnalyticsService {
           .toSet()
           .length;
 
-      stats.add(ProjectStats(
-        project: project,
-        contributionCount: projectContributions.length,
-        activeUsers: activeUsers,
-      ));
+      stats.add(
+        ProjectStats(
+          project: project,
+          contributionCount: projectContributions.length,
+          activeUsers: activeUsers,
+        ),
+      );
     }
 
     // Sort by contribution count descending
@@ -142,7 +146,7 @@ class AnalyticsService {
     DateTime startDate,
     DateTime endDate,
   ) async {
-    final users = await _firebaseService.getUsers();
+    final users = await _firebaseService.getUser(userId);
     final contributions = await _firebaseService.getContributions();
 
     final filteredContributions = contributions.where((c) {
@@ -160,16 +164,20 @@ class AnalyticsService {
             .map((c) => c.createdAt)
             .reduce((a, b) => a.isAfter(b) ? a : b);
 
-        activities.add(UserActivity(
-          user: user,
-          contributionCount: userContributions.length,
-          lastActivity: lastActivity,
-        ));
+        activities.add(
+          UserActivity(
+            user: user,
+            contributionCount: userContributions.length,
+            lastActivity: lastActivity,
+          ),
+        );
       }
     }
 
     // Sort by contribution count descending
-    activities.sort((a, b) => b.contributionCount.compareTo(a.contributionCount));
+    activities.sort(
+      (a, b) => b.contributionCount.compareTo(a.contributionCount),
+    );
     return activities;
   }
 }
@@ -180,10 +188,13 @@ final analyticsServiceProvider = Provider<AnalyticsService>((ref) {
   return AnalyticsService(firebaseService);
 });
 
-final analyticsDataProvider = FutureProvider.family<AnalyticsData, DateRange?>((ref, dateRange) async {
+final analyticsDataProvider = FutureProvider.family<AnalyticsData, DateRange?>((
+  ref,
+  dateRange,
+) async {
   final analyticsService = ref.watch(analyticsServiceProvider);
   final user = ref.watch(authProvider);
-  
+
   // Only fetch analytics for authenticated users
   if (user == null) {
     return AnalyticsData.empty();
@@ -196,15 +207,23 @@ final analyticsDataProvider = FutureProvider.family<AnalyticsData, DateRange?>((
 });
 
 // User-specific analytics
-final userAnalyticsProvider = FutureProvider.family<UserAnalytics, String>((ref, userId) async {
+final userAnalyticsProvider = FutureProvider.family<UserAnalytics, String>((
+  ref,
+  userId,
+) async {
   final firebaseService = ref.watch(firebaseServiceProvider);
   final contributions = await firebaseService.getContributions();
-  final userContributions = contributions.where((c) => c.userId == userId).toList();
-  
+  final userContributions = contributions
+      .where((c) => c.userId == userId)
+      .toList();
+
   return UserAnalytics(
     totalContributions: userContributions.length,
     averageContributionsPerWeek: _calculateWeeklyAverage(userContributions),
-    mostActiveProject: await _getMostActiveProject(userContributions, firebaseService),
+    mostActiveProject: await _getMostActiveProject(
+      userContributions,
+      firebaseService,
+    ),
     contributionStreak: _calculateContributionStreak(userContributions),
   );
 });
@@ -214,10 +233,7 @@ class DateRange {
   final DateTime startDate;
   final DateTime endDate;
 
-  const DateRange({
-    required this.startDate,
-    required this.endDate,
-  });
+  const DateRange({required this.startDate, required this.endDate});
 
   factory DateRange.lastWeek() {
     final now = DateTime.now();
@@ -262,38 +278,48 @@ class UserAnalytics {
 // Helper functions
 double _calculateWeeklyAverage(List<Contribution> contributions) {
   if (contributions.isEmpty) return 0.0;
-  
-  final firstContribution = contributions.map((c) => c.createdAt).reduce((a, b) => a.isBefore(b) ? a : b);
-  final lastContribution = contributions.map((c) => c.createdAt).reduce((a, b) => a.isAfter(b) ? a : b);
+
+  final firstContribution = contributions
+      .map((c) => c.createdAt)
+      .reduce((a, b) => a.isBefore(b) ? a : b);
+  final lastContribution = contributions
+      .map((c) => c.createdAt)
+      .reduce((a, b) => a.isAfter(b) ? a : b);
   final totalWeeks = lastContribution.difference(firstContribution).inDays / 7;
-  
-  return totalWeeks > 0 ? contributions.length / totalWeeks : contributions.length.toDouble();
+
+  return totalWeeks > 0
+      ? contributions.length / totalWeeks
+      : contributions.length.toDouble();
 }
 
-Future<Project?> _getMostActiveProject(List<Contribution> contributions, FirebaseService firebaseService) async {
+Future<Project?> _getMostActiveProject(
+  List<Contribution> contributions,
+  FirebaseService firebaseService,
+) async {
   if (contributions.isEmpty) return null;
-  
+
   final projectCounts = <String, int>{};
   for (final contribution in contributions) {
-    projectCounts[contribution.projectId] = (projectCounts[contribution.projectId] ?? 0) + 1;
+    projectCounts[contribution.projectId] =
+        (projectCounts[contribution.projectId] ?? 0) + 1;
   }
-  
+
   final mostActiveProjectId = projectCounts.entries
       .reduce((a, b) => a.value > b.value ? a : b)
       .key;
-  
-  final projects = await firebaseService.getProjects();
+
+  final projects = await firebaseService.getProject();
   return projects.where((p) => p.id == mostActiveProjectId).firstOrNull;
 }
 
 int _calculateContributionStreak(List<Contribution> contributions) {
   if (contributions.isEmpty) return 0;
-  
+
   contributions.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-  
+
   int streak = 0;
   DateTime currentDate = DateTime.now();
-  
+
   for (final contribution in contributions) {
     final contributionDate = DateTime(
       contribution.createdAt.year,
@@ -305,14 +331,15 @@ int _calculateContributionStreak(List<Contribution> contributions) {
       currentDate.month,
       currentDate.day,
     );
-    
-    if (contributionDate == checkDate || contributionDate == checkDate.subtract(const Duration(days: 1))) {
+
+    if (contributionDate == checkDate ||
+        contributionDate == checkDate.subtract(const Duration(days: 1))) {
       streak++;
       currentDate = contributionDate;
     } else {
       break;
     }
   }
-  
+
   return streak;
 }
